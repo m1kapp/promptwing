@@ -12,6 +12,7 @@ import {
 import Feed from "@/components/Feed";
 import { prompts, allTags, PromptItem, customFilterOptions, CustomFilterKey } from "@/data/prompts";
 import { brands } from "@/data/brands";
+import imageManifest from "@/data/image-manifest.json";
 import CustomFilter, { CustomFilterState, emptyFilter } from "@/components/CustomFilter";
 
 function useBrandFromUrl() {
@@ -170,7 +171,12 @@ function HomeInner() {
   }, [activeBrand, currentBrand]);
 
   const filteredPrompts = useMemo(() => {
-    let result = brandPrompts;
+    const existingImages = new Set((imageManifest as Record<string, string[]>)[activeBrand] ?? []);
+    let result = brandPrompts.filter((p) => {
+      if (!p.imageUrl) return false;
+      const filename = p.imageUrl.split("/").pop()!;
+      return existingImages.has(filename);
+    });
 
     if (isCustomFilterActive) {
       const keys = Object.keys(customFilterOptions) as CustomFilterKey[];
