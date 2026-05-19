@@ -1,0 +1,71 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #f2f2f7;
+  --foreground: #111;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #f5f5f5;
+}
+
+* { scrollbar-width: none; }
+*::-webkit-scrollbar { display: none; }
+
+body {
+  overflow: hidden;
+  min-width: 375px;
+}
+
+/* Watermark 외부 div가 scroll-snap 전파로 스크롤되는 것을 차단 */
+body > div {
+  overflow: clip !important;
+}
+
+/* ── Feed ── */
+.feed-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100%;
+}
+.feed-item {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  height: 100%;
+}
+
+/* feed scroll-snap이 AppShellContent 내부 스크롤과 충돌 방지 */
+.tab-scroll:has(.feed-container) {
+  overflow-y: hidden !important;
+}
+
+/* ── Animations ── */
+@keyframes copyFlash {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+.copy-flash { animation: copyFlash 0.3s ease-in-out; }
+
+@keyframes heartPop {
+  0% { transform: scale(0); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.heart-pop { animation: heartPop 0.4s ease-out; }
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.slide-up { animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.fade-in { animation: fadeIn 0.2s ease-out; }
