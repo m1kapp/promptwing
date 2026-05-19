@@ -24,6 +24,8 @@ export default function RootLayout({
       </head>
       <body style={{ fontFamily: '"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", sans-serif' }}>
         {children}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="https://m1k.app/badge/gn.svg" alt="" className="fixed bottom-0 left-0 w-0 h-0 opacity-0 pointer-events-none" aria-hidden="true" />
       </body>
     </html>
   );
