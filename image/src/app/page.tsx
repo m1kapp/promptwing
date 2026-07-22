@@ -14,6 +14,7 @@ import { prompts, allTags, PromptItem, customFilterOptions, CustomFilterKey } fr
 import { brands } from "@/data/brands";
 import imageManifest from "@/data/image-manifest.json";
 import CustomFilter, { CustomFilterState, emptyFilter } from "@/components/CustomFilter";
+import { deriveBrandPrompts } from "@/lib/brand-prompts";
 
 function useBrandFromUrl() {
   const searchParams = useSearchParams();
@@ -51,124 +52,10 @@ function HomeInner() {
     [activeBrand]
   );
 
-  const brandPrompts = useMemo<PromptItem[]>(() => {
-    const brand = currentBrand;
-    // 참고이미지 매핑: flow 리소스 패턴 → 현재 브랜드 대응 리소스
-    const refMap: Record<string, { url: string; label: string }> = {};
-    if (brand.id !== "flow" && !brand.id.startsWith("flow-")) {
-      const res = brand.resources;
-      const logo = res.find((r) => r.key === "mainLogo");
-      const model = res.find((r) => r.category === "홍보모델");
-      const product = res.find((r) => r.category === "제품");
-      const office = res.find((r) => r.category === "사업");
-      // flow 참고이미지 URL 패턴 → 브랜드 대응
-      if (logo) {
-        refMap["/references/flow/logo/flow-logo-purple.webp"] = { url: logo.url, label: logo.label };
-        refMap["/references/flow/logo/flow-wordmark-purple.webp"] = { url: logo.url, label: logo.label };
-        refMap["/references/flow/logo/flow-ai-gradient.webp"] = { url: logo.url, label: logo.label };
-      }
-      if (model) {
-        refMap["/references/flow/people/model-profile.webp"] = { url: model.url, label: model.label };
-        refMap["/references/flow/people/model-male-profile.webp"] = { url: model.url, label: model.label };
-        refMap["/references/flow/people/ceo-profile.webp"] = { url: model.url, label: model.label };
-      }
-      if (product) {
-        refMap["/references/flow/product/flow-desktop-projects.webp"] = { url: product.url, label: product.label };
-        refMap["/references/flow/product/flow-task-list.webp"] = { url: product.url, label: product.label };
-        refMap["/references/flow/product/flow-sales-dashboard.webp"] = { url: product.url, label: product.label };
-      }
-      if (office) {
-        refMap["/references/flow/office/flowground-allhands.webp"] = { url: office.url, label: office.label };
-        refMap["/references/flow/office/seminar-room.webp"] = { url: office.url, label: office.label };
-        refMap["/references/flow/office/team-group-photo.webp"] = { url: office.url, label: office.label };
-      }
-      // 캐릭터/마스코트 → 브랜드 로고로 대체 (마스코트 없는 브랜드)
-      const brandLogo = res.find((r) => r.category === "브랜드 로고") ?? logo;
-      if (brandLogo) {
-        for (const path of [
-          "/references/flow/package/floki-package.webp",
-          "/references/flow/package/flosuni-package.webp",
-          "/references/flow/package/borabuki-package.webp",
-        ]) {
-          refMap[path] = { url: brandLogo.url, label: `${brand.displayName} 로고` };
-        }
-      }
-      // 아이콘
-      if (logo) {
-        refMap["/references/flow/icons/flow-icons-multicolor.webp"] = { url: logo.url, label: logo.label };
-        refMap["/references/flow/icons/flow-icons-filled.webp"] = { url: logo.url, label: logo.label };
-      }
-    }
-
-    // 텍스트 치환 맵 (flow → 현재 브랜드)
-    const textMap: [RegExp, string][] = brand.id === "hkinno-n" ? [
-      [/flow\.team/gi, "HK이노엔"],
-      [/flow AI/gi, "HK이노엔"],
-      [/flow팀/gi, "HK이노엔"],
-      [/flow 팀/gi, "HK이노엔"],
-      [/\bflow\b/gi, "HK이노엔"],
-      [/플로키/g, "컨디션 캐릭터"],
-      [/플로수니/g, "컨디션 캐릭터"],
-      [/보라부키/g, "컨디션 캐릭터"],
-      [/이초록/g, "컨디션 캐릭터"],
-      [/펭플로/g, "컨디션 캐릭터"],
-      [/플로우그라운드/g, "HK이노엔 본사"],
-      [/보라색 범고래/g, "컨디션 보틀"],
-      [/마스코트 모티프/g, "브랜드 로고"],
-      [/마스코트/g, "브랜드 심볼"],
-      [/#a855f7/g, "#0066B3"],
-      [/보라색/g, "파란색"],
-      [/퍼플/g, "블루"],
-      [/purple/gi, "blue"],
-      [/morningmate\.com/g, "inno-n.com"],
-      [/영신로 220 KnK디지털타워 5층/g, "서울시 중구 을지로 100"],
-    ] : [];
-
-    const replaceText = (text: string) => {
-      if (textMap.length === 0) return text;
-      let result = text;
-      for (const [pattern, replacement] of textMap) result = result.replace(pattern, replacement);
-      return result;
-    };
-
-    return prompts.map((p) => {
-      const filename = p.imageUrl ? p.imageUrl.split("/").pop()!.replace(/\.png$/, ".webp") : null;
-      const imageUrl = filename ? `/images/${activeBrand}/${filename}` : p.imageUrl;
-
-      // 참고이미지 매핑
-      let refs = p.referenceImages;
-      if (refs && Object.keys(refMap).length > 0) {
-        refs = refs.map((ref) => {
-          if (refMap[ref.url]) return refMap[ref.url];
-          if (ref.url.startsWith("/references/flow/")) {
-            const fallback = brand.resources.find((r) => r.key === "mainLogo");
-            if (fallback) return { url: fallback.url, label: `${brand.displayName} 로고` };
-          }
-          return ref;
-        });
-      }
-
-      // 텍스트 치환
-      if (textMap.length === 0) {
-        return { ...p, imageUrl: imageUrl ?? p.imageUrl, referenceImages: refs };
-      }
-
-      return {
-        ...p,
-        imageUrl: imageUrl ?? p.imageUrl,
-        referenceImages: refs,
-        title: replaceText(p.title),
-        story: p.story ? replaceText(p.story) : p.story,
-        prompt: replaceText(p.prompt),
-        author: replaceText(p.author),
-        variables: p.variables?.map((v) => ({
-          ...v,
-          default: replaceText(v.default),
-          options: v.options?.map((o) => ({ ...o, value: replaceText(o.value), label: replaceText(o.label) })),
-        })),
-      };
-    });
-  }, [activeBrand, currentBrand]);
+  const brandPrompts = useMemo<PromptItem[]>(
+    () => deriveBrandPrompts(activeBrand, currentBrand),
+    [activeBrand, currentBrand]
+  );
 
   const filteredPrompts = useMemo(() => {
     const existingImages = new Set((imageManifest as Record<string, string[]>)[activeBrand] ?? []);
@@ -219,24 +106,7 @@ function HomeInner() {
             </h1>
             <div className="flex items-center gap-2">
               {activeTab === "prompts" && (
-                <div className="flex items-center bg-gray-100 dark:bg-zinc-800 rounded-full p-0.5">
-                  <Tooltip label="쇼츠 모드">
-                    <button
-                      onClick={() => setViewMode("shorts")}
-                      className={`p-1.5 rounded-full transition-colors ${viewMode === "shorts" ? "bg-white dark:bg-zinc-700 shadow-sm text-gray-900 dark:text-white" : "text-gray-400"}`}
-                    >
-                      <RectangleVertical className="w-3.5 h-3.5" />
-                    </button>
-                  </Tooltip>
-                  <Tooltip label="리스트 모드">
-                    <button
-                      onClick={() => setViewMode("list")}
-                      className={`p-1.5 rounded-full transition-colors ${viewMode === "list" ? "bg-white dark:bg-zinc-700 shadow-sm text-gray-900 dark:text-white" : "text-gray-400"}`}
-                    >
-                      <Rows3 className="w-3.5 h-3.5" />
-                    </button>
-                  </Tooltip>
-                </div>
+                <ViewModeToggle viewMode={viewMode} onChange={setViewMode} />
               )}
             </div>
           </div>
@@ -244,59 +114,16 @@ function HomeInner() {
 
         {/* Tag bar (prompts tab only) */}
         {activeTab === "prompts" && (
-          <div className="shrink-0 border-b border-gray-100 dark:border-zinc-800 bg-white dark:bg-zinc-950">
-            <div className="overflow-x-auto">
-              <div className="flex gap-1.5 px-4 py-2">
-                <button
-                  onClick={() => { setActiveTag(null); setCustomFilter(emptyFilter); }}
-                  className={`shrink-0 text-[12px] px-3.5 py-[6px] rounded-full font-semibold transition-all ${
-                    activeTag === null && !isCustomFilterActive
-                      ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900"
-                      : "bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-zinc-700"
-                  }`}
-                >
-                  전체
-                  <span className={`ml-1 text-[10px] ${activeTag === null && !isCustomFilterActive ? "text-white/50 dark:text-gray-900/50" : "text-gray-400"}`}>
-                    {brandPrompts.length}
-                  </span>
-                </button>
-                <button
-                  onClick={() => setCustomFilterOpen(!customFilterOpen)}
-                  className={`shrink-0 text-[12px] px-3.5 py-[6px] rounded-full font-semibold transition-all flex items-center gap-1 ${
-                    isCustomFilterActive
-                      ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900"
-                      : "bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-zinc-700"
-                  }`}
-                >
-                  <SlidersHorizontal className="w-3 h-3" />
-                  커스텀
-                  {isCustomFilterActive && (
-                    <span className="text-[10px] ml-0.5 text-white/50 dark:text-gray-900/50">
-                      {Object.values(customFilter).filter(Boolean).length}
-                    </span>
-                  )}
-                </button>
-                {allTags.map((tag) => (
-                  <button
-                    key={tag}
-                    onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-                    className={`shrink-0 text-[12px] px-3.5 py-[6px] rounded-full font-semibold transition-all ${
-                      activeTag === tag
-                        ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900"
-                        : "bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-zinc-700"
-                    }`}
-                  >
-                    {tag}
-                    {tagCounts[tag] > 0 && (
-                      <span className={`ml-1 text-[10px] ${activeTag === tag ? "text-white/50 dark:text-gray-900/50" : "text-gray-400"}`}>
-                        {tagCounts[tag]}
-                      </span>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
+          <PromptTagBar
+            totalCount={brandPrompts.length}
+            activeTag={activeTag}
+            isCustomFilterActive={isCustomFilterActive}
+            customFilterCount={Object.values(customFilter).filter(Boolean).length}
+            tagCounts={tagCounts}
+            onSelectAll={() => { setActiveTag(null); setCustomFilter(emptyFilter); }}
+            onToggleCustom={() => setCustomFilterOpen(!customFilterOpen)}
+            onSelectTag={(tag) => setActiveTag(activeTag === tag ? null : tag)}
+          />
         )}
 
         {/* Custom filter dialog */}
@@ -343,6 +170,88 @@ function HomeInner() {
         />
       </AppShell>
     </Watermark>
+  );
+}
+
+/** 헤더 우측 쇼츠/리스트 뷰 전환 토글 */
+function ViewModeToggle({ viewMode, onChange }: { viewMode: "shorts" | "list"; onChange: (mode: "shorts" | "list") => void }) {
+  return (
+    <div className="flex items-center bg-gray-100 dark:bg-zinc-800 rounded-full p-0.5">
+      <Tooltip label="쇼츠 모드">
+        <button
+          onClick={() => onChange("shorts")}
+          className={`p-1.5 rounded-full transition-colors ${viewMode === "shorts" ? "bg-white dark:bg-zinc-700 shadow-sm text-gray-900 dark:text-white" : "text-gray-400"}`}
+        >
+          <RectangleVertical className="w-3.5 h-3.5" />
+        </button>
+      </Tooltip>
+      <Tooltip label="리스트 모드">
+        <button
+          onClick={() => onChange("list")}
+          className={`p-1.5 rounded-full transition-colors ${viewMode === "list" ? "bg-white dark:bg-zinc-700 shadow-sm text-gray-900 dark:text-white" : "text-gray-400"}`}
+        >
+          <Rows3 className="w-3.5 h-3.5" />
+        </button>
+      </Tooltip>
+    </div>
+  );
+}
+
+/** 프롬프트 탭 상단 태그/필터 바 */
+function PromptTagBar({
+  totalCount,
+  activeTag,
+  isCustomFilterActive,
+  customFilterCount,
+  tagCounts,
+  onSelectAll,
+  onToggleCustom,
+  onSelectTag,
+}: {
+  totalCount: number;
+  activeTag: string | null;
+  isCustomFilterActive: boolean;
+  customFilterCount: number;
+  tagCounts: Record<string, number>;
+  onSelectAll: () => void;
+  onToggleCustom: () => void;
+  onSelectTag: (tag: string) => void;
+}) {
+  const pillClass = (active: boolean) =>
+    `shrink-0 text-[12px] px-3.5 py-[6px] rounded-full font-semibold transition-all ${active ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900" : "bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-zinc-700"}`;
+
+  return (
+    <div className="shrink-0 border-b border-gray-100 dark:border-zinc-800 bg-white dark:bg-zinc-950">
+      <div className="overflow-x-auto">
+        <div className="flex gap-1.5 px-4 py-2">
+          <button onClick={onSelectAll} className={pillClass(activeTag === null && !isCustomFilterActive)}>
+            전체
+            <span className={`ml-1 text-[10px] ${activeTag === null && !isCustomFilterActive ? "text-white/50 dark:text-gray-900/50" : "text-gray-400"}`}>
+              {totalCount}
+            </span>
+          </button>
+          <button onClick={onToggleCustom} className={`${pillClass(isCustomFilterActive)} flex items-center gap-1`}>
+            <SlidersHorizontal className="w-3 h-3" />
+            커스텀
+            {isCustomFilterActive && (
+              <span className="text-[10px] ml-0.5 text-white/50 dark:text-gray-900/50">
+                {customFilterCount}
+              </span>
+            )}
+          </button>
+          {allTags.map((tag) => (
+            <button key={tag} onClick={() => onSelectTag(tag)} className={pillClass(activeTag === tag)}>
+              {tag}
+              {tagCounts[tag] > 0 && (
+                <span className={`ml-1 text-[10px] ${activeTag === tag ? "text-white/50 dark:text-gray-900/50" : "text-gray-400"}`}>
+                  {tagCounts[tag]}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 

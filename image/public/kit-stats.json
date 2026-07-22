@@ -1,0 +1,249 @@
+{
+  "generatedAt": "2026-07-22T13:33:05.451Z",
+  "kitVersion": "0.0.37",
+  "source": {
+    "dir": "src",
+    "files": 13,
+    "totalLines": 4861,
+    "codeLines": 4575,
+    "breakdown": {
+      "frontend": {
+        "files": 8,
+        "codeLines": 1471
+      },
+      "backend": {
+        "files": 0,
+        "codeLines": 0
+      },
+      "shared": {
+        "files": 5,
+        "codeLines": 3104
+      }
+    }
+  },
+  "quality": {
+    "engine": "ast2",
+    "score": 80,
+    "grade": "A",
+    "cognitive": {
+      "avg": 1.2,
+      "p90": 4,
+      "max": 13,
+      "over15": 0,
+      "over25": 0,
+      "worst": [
+        {
+          "name": "PromptCard",
+          "cog": 13,
+          "cc": 13,
+          "file": "src/components/PromptCard.tsx",
+          "line": 24
+        },
+        {
+          "name": "buildRefMap",
+          "cog": 10,
+          "cc": 11,
+          "file": "src/lib/brand-prompts.ts",
+          "line": 10
+        },
+        {
+          "name": "HomeInner",
+          "cog": 9,
+          "cc": 9,
+          "file": "src/app/page.tsx",
+          "line": 36
+        },
+        {
+          "name": "ListView",
+          "cog": 9,
+          "cc": 15,
+          "file": "src/components/Feed.tsx",
+          "line": 200
+        },
+        {
+          "name": "(anonymous)",
+          "cog": 8,
+          "cc": 6,
+          "file": "src/app/page.tsx",
+          "line": 268
+        }
+      ]
+    },
+    "duplication": {
+      "percent": 1.1,
+      "dupTokens": 627,
+      "totalTokens": 58404,
+      "blocks": 41,
+      "worstFiles": [
+        {
+          "file": "src/data/prompts.ts",
+          "dupTokens": 627
+        }
+      ],
+      "worstBlocks": [
+        [
+          "src/data/prompts.ts:741",
+          "src/data/prompts.ts:2231"
+        ],
+        [
+          "src/data/prompts.ts:880",
+          "src/data/prompts.ts:960"
+        ],
+        [
+          "src/data/prompts.ts:881",
+          "src/data/prompts.ts:961"
+        ]
+      ]
+    },
+    "io": {
+      "readers": 0,
+      "uncachedReaders": 0,
+      "loopSites": 0,
+      "uncachedLoopSites": 0,
+      "worst": []
+    },
+    "renderGates": {
+      "hostages": 0,
+      "worst": []
+    },
+    "cc": {
+      "functions": 189,
+      "avg": 2.2,
+      "p90": 4,
+      "max": 15,
+      "over10": 4,
+      "over20": 0,
+      "worst": [
+        {
+          "name": "ListView",
+          "cc": 15,
+          "file": "src/components/Feed.tsx",
+          "line": 200
+        },
+        {
+          "name": "PromptCardSheet",
+          "cc": 15,
+          "file": "src/components/PromptCard.tsx",
+          "line": 231
+        },
+        {
+          "name": "PromptCard",
+          "cc": 13,
+          "file": "src/components/PromptCard.tsx",
+          "line": 24
+        },
+        {
+          "name": "buildRefMap",
+          "cc": 11,
+          "file": "src/lib/brand-prompts.ts",
+          "line": 10
+        },
+        {
+          "name": "HomeInner",
+          "cc": 9,
+          "file": "src/app/page.tsx",
+          "line": 36
+        }
+      ]
+    },
+    "branchDensity": 5.9,
+    "branches": 269,
+    "functions": 216,
+    "avgFileLines": 352,
+    "longFiles": 5,
+    "maxFile": {
+      "path": "src/data/prompts.ts",
+      "lines": 2678
+    }
+  },
+  "kit": {
+    "features": [
+      {
+        "name": "Watermark",
+        "loc": 190,
+        "category": "component"
+      },
+      {
+        "name": "ThemeButton",
+        "loc": 187,
+        "category": "component"
+      },
+      {
+        "name": "InAppSheet",
+        "loc": 177,
+        "category": "component"
+      },
+      {
+        "name": "Dialog",
+        "loc": 98,
+        "category": "component"
+      },
+      {
+        "name": "useShare",
+        "loc": 98,
+        "category": "hook"
+      },
+      {
+        "name": "ToastProvider",
+        "loc": 93,
+        "category": "component"
+      },
+      {
+        "name": "AppShell",
+        "loc": 78,
+        "category": "component"
+      },
+      {
+        "name": "Button",
+        "loc": 61,
+        "category": "component"
+      },
+      {
+        "name": "Avatar",
+        "loc": 57,
+        "category": "component"
+      },
+      {
+        "name": "Tooltip",
+        "loc": 53,
+        "category": "component"
+      },
+      {
+        "name": "TabBar",
+        "loc": 44,
+        "category": "component"
+      },
+      {
+        "name": "Badge",
+        "loc": 35,
+        "category": "component"
+      },
+      {
+        "name": "EmptyState",
+        "loc": 19,
+        "category": "component"
+      }
+    ],
+    "savedLines": 1190,
+    "savedKB": 46,
+    "savedA4": 15,
+    "savedPercent": 21,
+    "usage": {
+      "component": {
+        "used": 16,
+        "total": 60,
+        "percent": 27
+      },
+      "hook": {
+        "used": 2,
+        "total": 13,
+        "percent": 15
+      },
+      "util": {
+        "used": 1,
+        "total": 26,
+        "percent": 4
+      }
+    }
+  }
+}
