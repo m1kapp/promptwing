@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { THEME_SCRIPT } from "@m1kapp/kit";
+import { KitStyles } from "@m1kapp/kit/pwa";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className="antialiased" suppressHydrationWarning>
       <head>
+        <KitStyles />
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <link
           rel="stylesheet"
