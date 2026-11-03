@@ -1,36 +1,39 @@
 {
-  "generatedAt": "2026-07-22T13:33:05.451Z",
-  "kitVersion": "0.0.37",
+  "generatedAt": "2026-11-03T14:53:49.786Z",
+  "kitVersion": "0.0.61",
   "source": {
     "dir": "src",
-    "files": 13,
-    "totalLines": 4861,
-    "codeLines": 4575,
+    "files": 11,
+    "totalLines": 2142,
+    "codeLines": 1898,
     "breakdown": {
       "frontend": {
         "files": 8,
-        "codeLines": 1471
+        "codeLines": 1473
       },
       "backend": {
         "files": 0,
         "codeLines": 0
       },
       "shared": {
-        "files": 5,
-        "codeLines": 3104
+        "files": 3,
+        "codeLines": 425
       }
     }
   },
   "quality": {
     "engine": "ast2",
-    "score": 80,
-    "grade": "A",
+    "score": 89,
+    "grade": "A+",
+    "gradeBase": "A",
+    "dead": null,
     "cognitive": {
       "avg": 1.2,
       "p90": 4,
       "max": 13,
       "over15": 0,
       "over25": 0,
+      "top10avg": 8.3,
       "worst": [
         {
           "name": "PromptCard",
@@ -66,34 +69,149 @@
           "cc": 6,
           "file": "src/app/page.tsx",
           "line": 268
+        },
+        {
+          "name": "PromptCardSheet",
+          "cog": 8,
+          "cc": 15,
+          "file": "src/components/PromptCard.tsx",
+          "line": 231
+        },
+        {
+          "name": "(anonymous)",
+          "cog": 7,
+          "cc": 8,
+          "file": "src/components/CustomFilter.tsx",
+          "line": 107
+        },
+        {
+          "name": "(anonymous)",
+          "cog": 7,
+          "cc": 7,
+          "file": "src/components/CustomFilter.tsx",
+          "line": 135
+        },
+        {
+          "name": "(anonymous)",
+          "cog": 6,
+          "cc": 5,
+          "file": "src/app/page.tsx",
+          "line": 339
+        },
+        {
+          "name": "Feed",
+          "cog": 6,
+          "cc": 6,
+          "file": "src/components/Feed.tsx",
+          "line": 25
         }
       ]
     },
-    "duplication": {
-      "percent": 1.1,
-      "dupTokens": 627,
-      "totalTokens": 58404,
-      "blocks": 41,
-      "worstFiles": [
+    "fnLength": {
+      "avg": 7.9,
+      "p90": 22,
+      "max": 107,
+      "over40": 3,
+      "over80": 0,
+      "top10avg": 56.7,
+      "countAll": 189,
+      "count5": 72,
+      "count10": 36,
+      "worst": [
         {
-          "file": "src/data/prompts.ts",
-          "dupTokens": 627
+          "name": "PromptCard",
+          "lines": 107,
+          "cog": 13,
+          "file": "src/components/PromptCard.tsx",
+          "line": 24
+        },
+        {
+          "name": "HomeInner",
+          "lines": 85,
+          "cog": 9,
+          "file": "src/app/page.tsx",
+          "line": 36
+        },
+        {
+          "name": "ListView",
+          "lines": 67,
+          "cog": 9,
+          "file": "src/components/Feed.tsx",
+          "line": 200
+        },
+        {
+          "name": "PromptCardSheet",
+          "lines": 57,
+          "cog": 8,
+          "file": "src/components/PromptCard.tsx",
+          "line": 231
+        },
+        {
+          "name": "BrandKitView",
+          "lines": 48,
+          "cog": 1,
+          "file": "src/app/page.tsx",
+          "line": 258
+        },
+        {
+          "name": "Feed",
+          "lines": 47,
+          "cog": 6,
+          "file": "src/components/Feed.tsx",
+          "line": 25
+        },
+        {
+          "name": "PromptTagBar",
+          "lines": 43,
+          "cog": 4,
+          "file": "src/app/page.tsx",
+          "line": 201
+        },
+        {
+          "name": "CustomFilter",
+          "lines": 39,
+          "cog": 0,
+          "file": "src/components/CustomFilter.tsx",
+          "line": 32
+        },
+        {
+          "name": "buildRefMap",
+          "lines": 39,
+          "cog": 10,
+          "file": "src/lib/brand-prompts.ts",
+          "line": 10
+        },
+        {
+          "name": "VariableEditDialog",
+          "lines": 35,
+          "cog": 3,
+          "file": "src/components/PromptSheet.tsx",
+          "line": 168
         }
-      ],
-      "worstBlocks": [
-        [
-          "src/data/prompts.ts:741",
-          "src/data/prompts.ts:2231"
-        ],
-        [
-          "src/data/prompts.ts:880",
-          "src/data/prompts.ts:960"
-        ],
-        [
-          "src/data/prompts.ts:881",
-          "src/data/prompts.ts:961"
-        ]
       ]
+    },
+    "scoreInputs": {
+      "over15Pct": 0,
+      "over25Pct": 0,
+      "p90Cog": 4,
+      "maxCog": 13,
+      "dupPct": 0,
+      "longFileSeverityPct": 7.7,
+      "avgFileLines": 173,
+      "fnOver40Pct": 1.59,
+      "fnP90": 22,
+      "fnMax": 107,
+      "fnTop10": 56.7,
+      "cogTop10": 8.3
+    },
+    "duplication": {
+      "percent": 0,
+      "dupTokens": 0,
+      "totalTokens": 8809,
+      "blocks": 0,
+      "worstFiles": [],
+      "worstBlocks": [],
+      "variantSkipped": 0
     },
     "io": {
       "readers": 0,
@@ -101,6 +219,152 @@
       "loopSites": 0,
       "uncachedLoopSites": 0,
       "worst": []
+    },
+    "textbook": {
+      "awaitInForEach": {
+        "count": 0,
+        "worst": []
+      },
+      "spreadAccumulator": {
+        "count": 0,
+        "worst": []
+      },
+      "regexInLoop": {
+        "count": 0,
+        "worst": []
+      },
+      "floatingPromise": {
+        "count": 0,
+        "worst": []
+      },
+      "loopInvariantIndex": {
+        "count": 0,
+        "worst": []
+      },
+      "sharedRefFill": {
+        "count": 0,
+        "worst": []
+      },
+      "numericSortNoComparator": {
+        "count": 0,
+        "worst": []
+      },
+      "emptyCatch": {
+        "count": 1,
+        "worst": [
+          {
+            "file": "src/components/Feed.tsx",
+            "line": 260
+          }
+        ]
+      },
+      "statefulRegex": {
+        "count": 0,
+        "worst": []
+      },
+      "forInArray": {
+        "count": 0,
+        "worst": []
+      }
+    },
+    "typeSafety": {
+      "tsFiles": 11,
+      "totalAnnots": 399,
+      "anyType": {
+        "count": 0,
+        "pct": 0,
+        "worst": []
+      },
+      "asAny": {
+        "count": 0,
+        "worst": []
+      },
+      "nonNull": {
+        "count": 9,
+        "worst": [
+          {
+            "file": "src/app/page.tsx",
+            "line": 64,
+            "text": "p.imageUrl.split(\"/\").pop()!"
+          },
+          {
+            "file": "src/app/page.tsx",
+            "line": 272,
+            "text": "map.get(res.category)!"
+          },
+          {
+            "file": "src/app/page.tsx",
+            "line": 281,
+            "text": "map.get(cat)!"
+          },
+          {
+            "file": "src/components/Feed.tsx",
+            "line": 359,
+            "text": "editingVar!"
+          },
+          {
+            "file": "src/components/PromptCard.tsx",
+            "line": 199,
+            "text": "editingVar!"
+          },
+          {
+            "file": "src/components/PromptSheet.tsx",
+            "line": 195,
+            "text": "editingVar!"
+          }
+        ]
+      },
+      "tsIgnore": {
+        "count": 0,
+        "worst": []
+      }
+    },
+    "testDensity": {
+      "files": 0,
+      "lines": 0,
+      "percent": null
+    },
+    "quadratic": {
+      "sites": 2,
+      "candidates": 0,
+      "zones": {
+        "frontend": 2
+      },
+      "worst": [
+        {
+          "file": "src/app/page.tsx",
+          "line": 88,
+          "recv": "prompts",
+          "method": "filter",
+          "kind": "group",
+          "zone": "frontend",
+          "outer": "allTags",
+          "dynamicOuter": true,
+          "rank": 3
+        },
+        {
+          "file": "src/components/CustomFilter.tsx",
+          "line": 49,
+          "recv": "allPrompts",
+          "method": "filter",
+          "kind": "group",
+          "zone": "frontend",
+          "outer": "customFilterOptions[key]",
+          "dynamicOuter": true,
+          "rank": 3
+        }
+      ],
+      "candidateList": [],
+      "files": [
+        {
+          "file": "src/app/page.tsx",
+          "n": 1
+        },
+        {
+          "file": "src/components/CustomFilter.tsx",
+          "n": 1
+        }
+      ]
     },
     "renderGates": {
       "hostages": 0,
@@ -146,21 +410,26 @@
         }
       ]
     },
-    "branchDensity": 5.9,
-    "branches": 269,
+    "branchDensity": 12,
+    "branches": 227,
     "functions": 216,
-    "avgFileLines": 352,
-    "longFiles": 5,
+    "avgFileLines": 173,
+    "longFiles": 4,
     "maxFile": {
-      "path": "src/data/prompts.ts",
-      "lines": 2678
+      "path": "src/app/page.tsx",
+      "lines": 370
     }
   },
   "kit": {
     "features": [
       {
         "name": "Watermark",
-        "loc": 190,
+        "loc": 205,
+        "category": "component"
+      },
+      {
+        "name": "InAppSheet",
+        "loc": 194,
         "category": "component"
       },
       {
@@ -169,8 +438,18 @@
         "category": "component"
       },
       {
-        "name": "InAppSheet",
-        "loc": 177,
+        "name": "useShare",
+        "loc": 157,
+        "category": "hook"
+      },
+      {
+        "name": "Avatar",
+        "loc": 108,
+        "category": "component"
+      },
+      {
+        "name": "KitStyles",
+        "loc": 98,
         "category": "component"
       },
       {
@@ -179,28 +458,18 @@
         "category": "component"
       },
       {
-        "name": "useShare",
-        "loc": 98,
-        "category": "hook"
-      },
-      {
         "name": "ToastProvider",
         "loc": 93,
         "category": "component"
       },
       {
         "name": "AppShell",
-        "loc": 78,
+        "loc": 76,
         "category": "component"
       },
       {
         "name": "Button",
         "loc": 61,
-        "category": "component"
-      },
-      {
-        "name": "Avatar",
-        "loc": 57,
         "category": "component"
       },
       {
@@ -224,25 +493,25 @@
         "category": "component"
       }
     ],
-    "savedLines": 1190,
-    "savedKB": 46,
-    "savedA4": 15,
-    "savedPercent": 21,
+    "savedLines": 1428,
+    "savedKB": 56,
+    "savedA4": 18,
+    "savedPercent": 43,
     "usage": {
       "component": {
-        "used": 16,
-        "total": 60,
+        "used": 17,
+        "total": 64,
         "percent": 27
       },
       "hook": {
         "used": 2,
-        "total": 13,
-        "percent": 15
+        "total": 14,
+        "percent": 14
       },
       "util": {
         "used": 1,
-        "total": 26,
-        "percent": 4
+        "total": 48,
+        "percent": 2
       }
     }
   }
