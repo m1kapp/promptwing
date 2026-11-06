@@ -58,8 +58,12 @@ export default function PromptCard({ item, brandId, priority }: PromptCardProps)
   }, [liked]);
 
   const handleCopy = useCallback(async () => {
-    await navigator.clipboard.writeText(resolve(item.prompt));
-    toast("프롬프트 복사 완료!", { variant: "success" });
+    try {
+      await navigator.clipboard.writeText(resolve(item.prompt));
+      toast("프롬프트 복사 완료!", { variant: "success" });
+    } catch {
+      toast("복사하지 못했어요", { variant: "error" });
+    }
   }, [item.prompt, resolve, toast]);
 
   const handleCopyImage = useCallback(async (idx: number) => {

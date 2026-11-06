@@ -227,8 +227,12 @@ function ListView({ items, brandId }: { items: PromptItem[]; brandId?: string })
 
   const handleCopy = async () => {
     if (!selectedItem) return;
-    await navigator.clipboard.writeText(resolve(selectedItem.prompt));
-    toast("프롬프트 복사 완료!", { variant: "success" });
+    try {
+      await navigator.clipboard.writeText(resolve(selectedItem.prompt));
+      toast("프롬프트 복사 완료!", { variant: "success" });
+    } catch {
+      toast("복사하지 못했어요", { variant: "error" });
+    }
   };
 
   const handleCopyImage = async (url: string) => {
